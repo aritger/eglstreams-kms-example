@@ -1,0 +1,142 @@
+Name
+
+    NV_output_drm_flip_event
+
+Name Strings
+
+    EGL_NV_output_drm_flip_event
+
+Contributors
+
+    Miguel A. Vico
+    Daniel Kartch
+    Adam Cheney
+
+Contacts
+
+    TBD
+
+Status
+
+    Draft
+
+Version
+
+    Version 4 - March 13, 2016
+
+Number
+
+    TBD
+
+Extension Type
+
+    EGL display extension
+
+Dependencies
+
+    Requires EGL_EXT_output_drm
+    Requires EGL_NV_stream_attrib
+    Interacts with drmModePageFlip() method from libdrm
+
+Overview
+
+    With the EGLDevice and EGLOutput family of extensions, EGL and its
+    client APIs can be used in place of "native" rendering APIs to
+    implement the basic graphics functionality of native windowing
+    systems.
+
+    Presentation of new frames is handled internally in EGL, and its
+    clients may require notification when such action is complete.
+
+    In the case where display state changes are performed using
+    DRM-KMS operations, this extension provides means to clients to
+    share information with EGL so they can get notified when a page
+    flip is complete.
+
+    Currently, KMS CRTC EGLOutput stream consumers are the only defined
+    mechanism allowing page flip notification.
+
+New Types
+
+    None
+
+New Procedures and Functions
+
+    None
+
+New Tokens
+
+    Accepted as an attribute in the <attrib_list> parameter of
+    eglStreamConsumerAcquireAttribNV.
+
+    EGL_DRM_FLIP_EVENT_DATA_NV                  0x333E
+
+Add new entry to table "Table 3.10.2.a EGLStream Consumer Acquire
+Attributes" in EGL_NV_stream_attrib:
+
+    Attribute                   Type        Section
+    --------------------------  ----------  -------
+    EGL_DRM_FLIP_EVENT_DATA_NV  pointer     3.10.5.1.1
+
+Add a new subsection to the end of "3.10.5 Posting to Outputs" in
+EGL_EXT_output_base:
+
+    3.10.5.1 Synchronization with DRM-KMS Operations
+
+    Valid attributes that allow synchronization between EGL and clients
+    of both EGL and DRM-KMS are listed in Table 3.10.5.1.1.
+
+        Attribute                    Type
+        --------------------------   -------
+        EGL_DRM_FLIP_EVENT_DATA_NV   pointer
+
+        Table 3.10.5.1.1 EGL-DRM synchronization attributes
+
+    3.10.5.1.1 EGL_DRM_FLIP_EVENT_DATA_NV Attribute
+
+    The EGL_DRM_FLIP_EVENT_DATA_NV attribute allows to pass down to EGL
+    a user-space data pointer that will let clients properly handle page
+    flip events whenever a flip issued by EGL is complete. The valid
+    value for this attribute is any kind of pointer to client data.
+
+    EGL will not access memory addressed by any of those pointers. It will
+    pass data back to the client through a callback function previously
+    registered by the client using the corresponding DRM-KMS operations.
+    Thus, the client will be the sole owner of the data pointers.
+
+Add to description of eglStreamConsumerAcquireAttribNV in
+EGL_EXT_stream_acquire_mode:
+
+    If the parameter <attrib_list> contains a EGL_DRM_FLIP_EVENT_DATA_NV
+    attribute with its corresponding client data pointer, EGLOutput will
+    issue a page flip in such a way the EGL client will get notification
+    upon completion through the proper DRM-KMS means.
+
+Add to the list of failures of eglStreamConsumerAcquireAttribNV in
+EGL_EXT_stream_acquire_mode:
+
+    - EGL_BAD_MATCH is generated if <attrib_list> contains multiple
+      EGL_DRM_FLIP_EVENT_DATA_NV attributes.
+
+    - EGL_BAD_ACCESS is generated if <attrib_list> contains
+      EGL_DRM_FLIP_EVENT_DATA_NV attribute and the corresponding
+      EGLOutput handle does not represent a KMS CRTC object.
+
+Issues
+
+    None
+
+Revision History:
+
+    #4  (March 13th, 2016) Miguel A. Vico
+        - Rewritten against wording of EGL_NV_stream_attrib.
+
+    #3  (February 19th, 2016) Miguel A. Vico
+        - Add new failures to eglStreamConsumerAcquireAttribNV.
+
+    #2  (February 15th, 2016) Miguel A. Vico
+        - Assigned enumerated values for constants.
+
+    #1  (February 10th, 2016) Miguel A. Vico
+        - Initial draft, extending functionality previously proposed in
+          EGL_EXT_stream_acquire_mode.

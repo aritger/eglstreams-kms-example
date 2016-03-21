@@ -1,0 +1,170 @@
+Name
+
+    EXT_stream_acquire_mode
+
+Name Strings
+
+    EGL_EXT_stream_acquire_mode
+
+Contributors
+
+    Daniel Kartch
+    James Jones
+    Damien Leone
+    Adam Cheney
+    Miguel A. Vico
+
+Contacts
+
+    TBD
+
+Status
+
+    Draft
+
+Version
+
+    Version 6 - March 13, 2016
+
+Number
+
+    TBD
+
+Extension Type
+
+    EGL display extension
+
+Dependencies
+
+    Requires EGL_KHR_stream
+    Requires EGL_NV_stream_attrib
+    Interacts with EGL_KHR_stream_consumer_gltexture
+    Interacts with EGL_EXT_stream_consumer_egloutput
+
+Overview
+
+    The method by which an EGLStream consumer acquires frames are
+    defined by individual consumers. In some cases (e.g. GL texture
+    consumers), acquisition is manually triggered by the application. In
+    others (e.g. EGLOutput consumers), acquisition occurs automatically
+    as new frames become available.
+
+    In some cases, it may be desirable to support both behaviors for a
+    single consumer, allowing the application to choose between them. In
+    particular, for EGLOutput consumers, automatic acquisition allows
+    rendered frames to become available on the display as soon as
+    possible, but manual acquisition may be needed to synchronize
+    changes in display mode with changes in the size of the available
+    frames.
+
+    This extension defines a new stream attribute to select the desired
+    behavior, and describes its interaction with existing consumer
+    types.
+
+New Types
+
+    None
+
+New Functions
+
+    None
+
+New Tokens
+
+    Accepted as an attribute in the <attrib_list> parameter of
+    eglCreateStreamKHR and as the <attribute> parameter of
+    eglStreamAttribKHR and eglQueryStreamKHR.
+
+    EGL_CONSUMER_AUTO_ACQUIRE_EXT                0x332B
+
+Add to table "3.10.4.4 EGLStream Attributes" in the EGL_KHR_stream
+extension spec
+
+        Attribute                     Read/Write   Type   Section
+        ----------------------------- ---------- -------- --------
+        EGL_CONSUMER_AUTO_ACQUIRE_EXT     rw     EGLint   3.10.4.x
+
+Add new subsection at the end of "3.10.4 EGLStream Attributes" in the
+EGL_KHR_stream extension spec
+
+    3.10.4.x EGL_CONSUMER_AUTO_ACQUIRE_EXT Attribute
+
+    The EGL_CONSUMER_AUTO_ACQUIRE_EXT attribute indicates whether the
+    consumer attached to the stream should automatically acquire new
+    frames as they become available. Valid values are EGL_TRUE,
+    EGL_FALSE, and EGL_DONT_CARE. The default is EGL_DONT_CARE.
+
+    If the value is EGL_DONT_CARE at the time a consumer is connected to
+    the stream, it will be changed to EGL_FALSE or EGL_TRUE based on the
+    default for the consumer type. If set to EGL_FALSE or EGL_TRUE and
+    the consumer does not support that mode, the consumer connection
+    operation will fail.
+
+    This attribute is read/write, and may be changed at any time.
+    However if a consumer is attached to the stream which does not
+    support the new mode, the call to eglStreamAttribKHR will fail with
+    an EGL_BAD_PARAMETER error.
+
+    If the value is changed from EGL_FALSE to EGL_TRUE, and there are
+    new frames available in the stream, the consumer will immediately
+    begin acquiring them. If the value is changed from EGL_TRUE to
+    EGL_FALSE, the consumer will cease acquiring frames until an
+    acquire operation appropriate to the consumer is called.
+
+If EGL_KHR_stream_consumer_gltexture is present, add to the list of
+failure modes for eglStreamConsumerGLTextureExternalKHR
+
+        - EGL_BAD_MATCH is generated if the value of <stream>'s
+          EGL_CONSUMER_AUTO_ACQUIRE_EXT attribute is EGL_TRUE.
+
+and add before the declaration of eglStreamConsumerAcquireKHR
+
+    GL texture consumers only support manual acquisition of frames.
+    Attempting to change the value of EGL_CONSUMER_AUTO_ACQUIRE_EXT to
+    EGL_TRUE will fail.
+
+If EGL_EXT_stream_consumer_egloutput is present, in section "3.10.2.1
+EGLOutputLayerEXT consumer", replace last sentence of "On success"
+paragraph as well as the two following paragraphs with:
+
+    When a new frame is inserted into <stream> by the producer, the
+    behavior is determined by the value of the stream's
+    EGL_CONSUMER_AUTO_ACQUIRE_EXT attribute. If set to EGL_TRUE, the
+    frame will be scheduled for display on <layer>, taking into account
+    any timestamps, swap intervals, or other limitations imposed by the
+    stream attributes, without further action required on the part of
+    the application. If set to EGL_FALSE, the application must manually
+    update the frame visible on <layer> by calling
+    eglStreamConsumerAcquireAttribNV.
+
+    If <layer> is rebound to a different stream by a subsequent call
+    to eglStreamConsumerOutputEXT, then <stream> will be placed into the
+    EGL_STREAM_STATE_DISCONNECTED_KHR state.
+
+    When connected to an EGLOutput consumer, call eglStreamConsumerAcquireAttribNV
+    to acquire the next available image frame from <stream> and schedule
+    it for display on <layer>.
+Issues
+
+    None
+
+Revision History:
+
+    #6  (March 13th, 2016) Miguel A. Vico
+        - Rewritten against wording of EGL_NV_stream_attrib.
+
+    #5  (June 12th, 2015) Miguel A. Vico
+        - Added <attrib_list> parameter and rewritten accordingly.
+
+    #4  (April 29th, 2015) Miguel A. Vico
+        - Assigned enumerated values for constants.
+
+    #3  (March 19th, 2015) Daniel Kartch
+        - Fixed typos
+
+    #2  (March 18th, 2015) Daniel Kartch
+        - Rewritten as a more generic extension, describing interactions
+          with GL texture and EGLOutput consumers.
+
+    #1  (March 12th, 2015) Daniel Kartch
+        - Initial draft as an EGLOutput extension
