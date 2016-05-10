@@ -1,0 +1,129 @@
+Name
+
+    WL_wayland_eglstream
+
+Name Strings
+
+    EGL_WL_wayland_eglstream
+
+Contributors
+
+    Miguel A. Vico
+    Adam Cheney
+
+Contact
+
+    Miguel A. Vico, NVIDIA Corporation (mvicomoya 'at' nvidia.com)
+
+Status
+
+    Draft
+
+Version
+
+    3 - April 29, 2015
+
+Number
+
+    TBD
+
+Extension Type
+
+    Display extension
+
+Dependencies
+
+    Requires EGL_KHR_stream
+    Requires EGL_NV_stream_attrib
+    Requires EGL_WL_bind_wayland_display
+
+    This extension is written against the wording of the EGL 1.5
+    specification, but may be used with older versions that support
+    EGLAttribKHR.
+
+Overview
+
+    This extension provides means for a Wayland compositor to create
+    the consumer endpoint of an EGLStream from a wl_resource. The EGL
+    implementation must provide one or more interfaces in the Wayland
+    protocol to allow Wayland clients to create wl_resource objects
+    that represent an EGLStream.
+
+IP Status
+
+    No known IP issues.
+
+New Procedures and Functions
+
+    None
+
+New Tokens
+
+    Accepted in the <attrib_list> parameter of eglCreateStreamAttribNV:
+
+        EGL_WAYLAND_EGLSTREAM_WL                0x334B
+
+Add to the EGL_WL_bind_wayland_display extension specification after
+the section describing how to create EGLImage objects from a wl_buffer:
+
+    A wl_resource can be bound to an EGLStream in the compositor. A
+    pointer to wl_resource must be passed as EGL_WAYLAND_EGLSTREAM_WL
+    attribute in <attrib_list> of eglCreateStreamAttribNV. In case of
+    success, eglCreateStreamAttribNV will return an EGLStream handle
+    associated to the given wl_resource, which can be used by the
+    compositor to attach a consumer and start acquiring frames from the
+    wayland client (producer). Otherwise, EGL_NO_STREAM_KHR will be
+    returned and an EGL error will be generated.
+
+Add a new entry to table "Table 3.10.4.4 EGLStream Attributes" of the
+EGL_KHR_stream extension specification:
+
+        Attribute                   Read/Write   Type          Section
+        --------------------------  ----------   ------        --------
+        EGL_WAYLAND_EGLSTREAM_WL        wo       *wl_resource  3.10.4.x
+
+Add a new subsection 3.10.4.x at the end of section "3.10.4 EGLStream
+Attributes" of the EGL_KHR_stream extension specification:
+
+    3.10.4.x EGL_WAYLAND_EGLSTREAM_WL Attribute
+
+    This attribute is only accepted by eglCreateStreamAttribNV. It
+    allows a wayland compositor to create a consumer endpoint EGLStream
+    instance from a given wl_resource. The valid value for this
+    attribute is a pointer to a wl_resource.
+
+Add to the list of failures of eglCreateStreamAttribNV in the
+EGL_NV_stream_attrib extension specification:
+
+    - EGL_BAD_MATCH is generated if <attrib_list> contains multiple
+      EGL_WAYLAND_EGLSTREAM_WL attributes.
+
+    - EGL_BAD_ACCESS is generated if <attrib_list> contains an
+      EGL_WAYLAND_EGLSTREAM_WL attribute and the corresponding
+      wl_resource pointer is NULL or does not represent a valid
+      EGLStream.
+
+    - EGL_BAD_ACCESS is generated if <attrib_list> contains an
+      EGL_WAYLAND_EGLSTREAM_WL attribute and one or more producer-side
+      specific attributes.
+
+    - EGL_BAD_STREAM_KHR is generated if <attrib_list> contains an
+      EGL_WAYLAND_EGLSTREAM_WL attribute and the corresponding
+      wl_resource pointer represents a previously created EGLStream.
+
+Issues
+
+    None
+
+Revision History:
+
+    #3  (April 29th, 2016) Miguel A. Vico
+        - Extending the list of failures of eglCreateStreamAttribNV.
+
+    #2  (April 19th, 2016) Miguel A. Vico
+        - Assign enumeration value for EGL_WAYLAND_EGLSTREAM_WL.
+
+    #1  (April 18th, 2016) Miguel A. Vico
+        - Initial draft, adding a new attribute for
+          eglCreateStreamAttribNV function defined in
+          EGL_NV_stream_attrib.
