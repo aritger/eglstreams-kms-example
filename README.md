@@ -52,15 +52,15 @@ Concerns
 EGL Extension Specs Used Here
 -----------------------------
 
-https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_device_base.txt
-https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_device_enumeration.txt
-https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_device_query.txt
-https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_device_drm.txt
+[EGL_EXT_device_base](https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_device_base)  
+[EGL_EXT_device_enumeration](https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_device_enumeration)  
+[EGL_EXT_device_query](https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_device_query)  
+[EGL_EXT_device_drm](https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_device_drm)  
 
-https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_platform_base.txt
-https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_platform_device.txt
-https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_output_base.txt
+[EGL_EXT_platform_base](https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_platform_base)  
+[EGL_EXT_platform_device](https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_platform_device)  
+[EGL_EXT_output_base](https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_output_base)  
 
-https://www.khronos.org/registry/egl/extensions/KHR/EGL_KHR_stream.txt
-https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_stream_consumer_egloutput.txt
-https://www.khronos.org/registry/egl/extensions/KHR/EGL_KHR_stream_producer_eglsurface.txt
+[EGL_KHR_stream](https://www.khronos.org/registry/egl/extensions/KHR/EGL_KHR_stream)  
+[EGL_EXT_stream_consumer_egloutput](https://www.khronos.org/registry/egl/extensions/EXT/EGL_EXT_stream_consumer_egloutput)  
+[EGL_KHR_stream_producer_eglsurface](https://www.khronos.org/registry/egl/extensions/KHR/EGL_KHR_stream_producer_eglsurface)  
