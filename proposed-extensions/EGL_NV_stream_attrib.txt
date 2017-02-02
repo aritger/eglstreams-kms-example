@@ -22,7 +22,7 @@ Status
 
 Version
 
-    Version 1 - February 29, 2016
+    Version 2 - April 20, 2016
 
 Number
 
@@ -80,13 +80,13 @@ New Functions
 
     EGLBoolean eglStreamConsumerAcquireAttribNV(
         EGLDisplay       dpy,
-        EGLStreamKHR     stream
-        EGLAttrib       *attrib_list);
+        EGLStreamKHR     stream,
+        const EGLAttrib *attrib_list);
 
     EGLBoolean eglStreamConsumerReleaseAttribNV(
         EGLDisplay       dpy,
         EGLStreamKHR     stream,
-        EGLAttrib       *attrib_list);
+        const EGLAttrib *attrib_list);
 
 New Tokens
 
@@ -153,7 +153,7 @@ In the EGL_KHR_stream specification, insert at the beginning of section
             EGLDisplay       dpy,
             EGLStreamKHR     stream,
             EGLenum          attribute,
-            EGLAttrib       *value);
+            const EGLAttrib *value);
 
     to query the value of an EGLStream's attribute whose type is
     compatible with EGLAttrib, and
@@ -173,25 +173,25 @@ end of section "3.10.4 EGLStream Attributes"
     indicates the maximum amount of time (in microseconds) that
     eglStreamConsumerAcquireAttribNV should block.  If 0 (the default)
     it will not block at all.  If negative it will block indefinitely.
-    
+
 In the EGL_KHR_stream extension, insert in section "3.10.2 Connecting an
-EGLStream to a consumer", before subsection 3.10.2.1 
+EGLStream to a consumer", before subsection 3.10.2.1
 
     Methods for acquiring frames from a stream and releasing them back
     to a stream are dependent on the type of consumer. Some consumers
     support calling
 
         EGLBoolean eglStreamConsumerAcquireAttribNV(
-            EGLDisplay    dpy,
-            EGLStreamKHR  stream
-            EGLAttrib    *attrib_list);
+            EGLDisplay       dpy,
+            EGLStreamKHR     stream,
+            const EGLAttrib *attrib_list);
 
     to acquire the next available frame in <stream> and
 
         EGLBoolean eglStreamConsumerReleaseAttribNV(
-            EGLDisplay    dpy,
-            EGLStreamKHR  stream,
-            EGLAttrib    *attrib_list);
+            EGLDisplay       dpy,
+            EGLStreamKHR     stream,
+            const EGLAttrib *attrib_list);
 
     to release a frame back to the stream.
 
@@ -325,6 +325,9 @@ Issues
     original function.
 
 Revision History
+
+    #2 (April 20th, 2016) Miguel A. Vico
+       - Fix type of attrib_list of acquire/release functions
 
     #1 (February 29th, 2016) Daniel Kartch
        - Initial draft

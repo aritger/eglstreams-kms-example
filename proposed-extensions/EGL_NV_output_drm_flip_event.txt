@@ -11,6 +11,7 @@ Contributors
     Miguel A. Vico
     Daniel Kartch
     Adam Cheney
+    James Jones
 
 Contacts
 
@@ -22,7 +23,7 @@ Status
 
 Version
 
-    Version 4 - March 13, 2016
+    Version 5 - January 27, 2017
 
 Number
 
@@ -36,6 +37,7 @@ Dependencies
 
     Requires EGL_EXT_output_drm
     Requires EGL_NV_stream_attrib
+    Requires EGL_EXT_stream_acquire_mode
     Interacts with drmModePageFlip() method from libdrm
 
 Overview
@@ -105,7 +107,7 @@ EGL_EXT_output_base:
     Thus, the client will be the sole owner of the data pointers.
 
 Add to description of eglStreamConsumerAcquireAttribNV in
-EGL_EXT_stream_acquire_mode:
+EGL_NV_stream_attrib:
 
     If the parameter <attrib_list> contains a EGL_DRM_FLIP_EVENT_DATA_NV
     attribute with its corresponding client data pointer, EGLOutput will
@@ -113,7 +115,7 @@ EGL_EXT_stream_acquire_mode:
     upon completion through the proper DRM-KMS means.
 
 Add to the list of failures of eglStreamConsumerAcquireAttribNV in
-EGL_EXT_stream_acquire_mode:
+EGL_NV_stream_attrib:
 
     - EGL_BAD_MATCH is generated if <attrib_list> contains multiple
       EGL_DRM_FLIP_EVENT_DATA_NV attributes.
@@ -127,6 +129,9 @@ Issues
     None
 
 Revision History:
+
+    #5  (January 27th, 2017) Miguel A. Vico
+        - Added EGL_EXT_stream_acquire_mode dependency
 
     #4  (March 13th, 2016) Miguel A. Vico
         - Rewritten against wording of EGL_NV_stream_attrib.
