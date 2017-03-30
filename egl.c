@@ -74,7 +74,7 @@ EGLDeviceEXT GetEglDevice(void)
     }
 
     /* Allocate memory to store that many EGLDeviceEXTs. */
-    devices = calloc(sizeof(EGLDeviceEXT), numDevices);
+    devices = calloc(numDevices, sizeof(EGLDeviceEXT));
 
     if (devices == NULL) {
         Fatal("Memory allocation failure.\n");
